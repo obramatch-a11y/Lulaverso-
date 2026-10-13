@@ -20,6 +20,11 @@ jobs:
     steps:
       - name: Obter codigo do LULAVERSO
         uses: actions/checkout@v4
+      - name: Validar JavaScript e regras do jogo
+        run: |
+          node --check game.js
+          node --check upgrade.js
+          node tests/smoke.cjs
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Empacotar site
