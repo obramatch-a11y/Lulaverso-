@@ -15,20 +15,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Obter arquivos
+      - name: Obter codigo do LULAVERSO
         uses: actions/checkout@v4
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Empacotar site estatico
+      - name: Empacotar site
         uses: actions/upload-pages-artifact@v4
         with:
           path: .
-      - name: Publicar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
