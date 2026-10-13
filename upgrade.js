@@ -1,0 +1,64 @@
+/* LULAVERSO 3.0 — interface de cartas colecionáveis e arte vetorial original */
+(() => {
+'use strict';
+const N = (v,d=0)=>Number.isFinite(+v)?+v:d;
+const seed=c=>{let h=17;for(const ch of String(c?.id||c?.name||''))h=(h*33+ch.charCodeAt(0))%9973;return h};
+const femaleIds=new Set(['h2','h3','h6','h8','h9','h10','h16','h18','h19','v4','v15']);
+const titleCase={heal:'CURA CELESTIAL',chaos:'DESCONTROLE',shield:'DEFESA SAGRADA',boost:'FORTALECIMENTO',draw:'ESTRATÉGIA',stun:'CONTROLE',strike:'ATAQUE SUPREMO',aoe:'DANO EM ÁREA'};
+const tierName={common:'COMUM',rare:'RARA',epic:'ÉPICA',legend:'LENDÁRIA'};
+function rarity(c){if(c.faction==='hero'){const id=N(String(c.id).replace('h',''));return [0,11,16].includes(id)?'legend':[2,3,8,9,18].includes(id)?'epic':[1,4,6,19].includes(id)?'rare':'common'}if(c.faction==='villain'){const id=N(String(c.id).replace('v',''));return [0,6].includes(id)?'legend':[1,3,5,13].includes(id)?'epic':'rare'}return c.type==='spell'?'rare':'common'}
+function art(c){
+ const id=String(c.id||'x'),n=seed(c),foe=c.faction==='villain',unit=c.faction==='villain'||c.faction==='hero',female=femaleIds.has(id);
+ const prime=foe?'#9348e6':'#f8c641',bright=foe?'#ff6b75':'#fff4a0',dark=foe?'#211032':'#13244e';
+ const hair=['#392b27','#9b7555','#d2c3b0','#1d1a29','#70482b'][n%5],skin=['#df9e74','#b97957','#ebad85','#9c694c'][n%4];
+ const pupil=foe?'#c42b42':'#24395e';
+ const eyey=123,faceX=119+(n%5-2),faceY=127;
+ const shapes=Array.from({length:8},(_,i)=>{const a=i*Math.PI/4 + (n%9)/13,x=120+103*Math.cos(a),y=129+118*Math.sin(a);return '<path d="M120 147 L'+x.toFixed(1)+' '+y.toFixed(1)+'" stroke="'+bright+'" opacity=".19" stroke-width="'+(1+i%3)+'"/>'}).join('');
+ if(!unit){const type=c.type==='trap'?'#ff6c7d':'#84d9ff';return '<svg class="portrait" viewBox="0 0 240 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração mágica de '+esc(c.name)+'"><defs><radialGradient id="g'+id+'"><stop stop-color="'+type+'"/><stop offset=".68" stop-color="#1d3f6a"/><stop offset="1" stop-color="#090f28"/></radialGradient></defs><rect width="240" height="290" fill="url(#g'+id+')"/><g fill="none" stroke="'+type+'" opacity=".56"><circle cx="120" cy="128" r="84" stroke-width="2"/><circle cx="120" cy="128" r="64"/><path d="M120 22 211 178 29 178Z" stroke-width="3"/><path d="M30 128 H210 M120 35V219"/></g><circle cx="120" cy="128" r="48" fill="#fef8d422" stroke="#fff7ba" stroke-width="2"/><text x="120" y="153" text-anchor="middle" font-size="67">'+esc(c.icon)+'</text><circle cx="120" cy="128" r="99" fill="none" stroke="#fff7ba" stroke-dasharray="3 10" opacity=".7"/></svg>'}
+ const robe=foe?'#4f2959':['#a41e36','#e5e7ff','#8b1529','#27436b'][n%4];
+ const helmet=foe ? '<path d="M52 112 Q48 39 118 36 Q188 37 193 115L179 88Q121 39 63 91Z" fill="'+hair+'" stroke="#150e25" stroke-width="5"/><path d="M65 68 L39 47 L81 58 M174 68 L204 43 L164 55" fill="'+robe+'" stroke="#db63ef" stroke-width="5"/>' : '<path d="M55 107Q41 59 85 43 L120 26L156 43Q199 62 186 110 L170 85L155 75 L120 65L80 80L68 101Z" fill="#e2b650" stroke="#fff0a5" stroke-width="5"/><path d="M120 26L134 55L120 72L106 55Z" fill="#e83847"/><path d="M68 94Q36 76 27 108 L62 131M173 94Q202 76 216 108L180 131" fill="#f5d979" stroke="#d89b2e" stroke-width="5"/>';
+ const hairFront=female?'<path d="M73 96Q61 55 116 53 Q169 52 166 94 L163 200 L184 217 Q170 248 146 208 L153 109 Q121 88 93 115L90 206Q57 236 54 204Z" fill="'+hair+'" stroke="#2c1b29" stroke-width="3"/>':'<path d="M69 109 Q64 69 108 72 Q131 54 167 86 L170 114L155 92L133 104L95 94Z" fill="'+hair+'"/>';
+ const beard=(!female&&(id==='h0'||id==='h17'||n%6===0))?'<path d="M81 166Q88 218 120 215Q153 218 165 166Q142 185 123 185Q95 182 81 166Z" fill="'+(id==='h0'?'#dedede':hair)+'" stroke="#443a35" stroke-width="2"/>':'';
+ const visor=foe?'<path d="M81 139L102 135 M137 135L158 139" stroke="#170a23" stroke-width="7" stroke-linecap="round"/>':'<path d="M84 130L105 132 M135 132L155 130" stroke="#5b4639" stroke-width="4" stroke-linecap="round"/>';
+ const expression=foe?'<path d="M92 177Q120 208 152 176 Q121 186 92 177Z" fill="#6c142b" stroke="#2b0a1d" stroke-width="4"/><path d="M100 181H145" stroke="#fff" stroke-width="7"/>':'<path d="M107 179Q120 184 134 178" fill="none" stroke="#8d5148" stroke-width="3" stroke-linecap="round"/>';
+ const accent=foe?'<circle cx="190" cy="49" r="21" fill="#f0c934" stroke="#240c2d" stroke-width="4"/><text x="190" y="57" font-size="23" text-anchor="middle">?!</text>':'<path d="M120 228l12 20-12 18-12-18z" fill="#e73548" stroke="#fff0b0" stroke-width="3"/>';
+ return '<svg class="portrait" viewBox="0 0 240 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Retrato artístico de '+esc(c.name)+'"><defs><radialGradient id="bg'+id+'"><stop stop-color="'+prime+'" stop-opacity=".75"/><stop offset=".55" stop-color="'+dark+'"/><stop offset="1" stop-color="#080e24"/></radialGradient><linearGradient id="metal'+id+'" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fffad6"/><stop offset=".45" stop-color="'+prime+'"/><stop offset="1" stop-color="#694329"/></linearGradient></defs><rect width="240" height="290" fill="url(#bg'+id+')"/>'+shapes+'<circle cx="120" cy="132" r="94" fill="none" stroke="'+bright+'" opacity=".45" stroke-width="2"/><path d="M0 290Q9 221 58 203L83 197 157 197 190 211Q235 230 240 290Z" fill="'+robe+'" stroke="url(#metal'+id+')" stroke-width="10"/><path d="M29 273L43 213L79 200L120 232L161 200L197 215L218 273Z" fill="url(#metal'+id+')" opacity=".8"/><path d="M69 205L120 237L173 205" fill="none" stroke="'+dark+'" stroke-width="13"/><ellipse cx="'+faceX+'" cy="'+faceY+'" rx="'+(foe?61:54)+'" ry="'+(foe?74:67)+'" fill="'+skin+'" stroke="#5e4037" stroke-width="4"/>'+hairFront+'<path d="M83 133Q99 124 109 134M131 134Q144 124 158 133" stroke="#3a2834" stroke-width="'+(foe?6:4)+'" fill="none"/><ellipse cx="97" cy="'+eyey+'" rx="6" ry="'+(foe?8:5)+'" fill="'+pupil+'"/><ellipse cx="144" cy="'+eyey+'" rx="6" ry="'+(foe?8:5)+'" fill="'+pupil+'"/><path d="M120 130L113 155L126 158" stroke="#8a5144" stroke-width="3" fill="none"/>'+visor+expression+beard+helmet+accent+'<path d="M13 290L28 235L46 238L39 290M203 290L199 238L215 236L235 290" fill="'+prime+'" opacity=".8"/><path d="M5 284L50 270 M190 269L235 284" stroke="'+bright+'" stroke-width="5" opacity=".65"/></svg>';
+}
+function role(c){if(c.faction==='villain')return 'DESCONTROLE';if(c.faction==='hero')return titleCase[c.kind]||'GUARDIÃO';if(c.type==='trap')return 'RESPOSTA';return 'EFEITO IMEDIATO'}
+const oldCardHTML=cardHTML;
+cardHTML=function(c,opts={}){
+ const type=cardType(c),locked=!!opts.locked,tier=rarity(c),name=locked?'Guardião bloqueado':c.name,desc=cardDesc(c)||'',unit=(type==='hero'||type==='villain');
+ const shortDesc=desc.length>124?desc.slice(0,121).trim()+'…':desc;
+ const artHtml=locked?'<div class="locked-glyph">◆<br>?</div>':art(c);
+ return '<button type="button" class="gcard v3card tier-'+tier+' '+(type==='villain'?'foe':type)+' '+(opts.small?'compact ':'')+(locked?'locked ':'')+(opts.selected?'selected':'')+'" data-search="'+esc((c.name+' '+(c.title||'')+' '+(c.skill||'')+' '+role(c)).toLowerCase())+'" data-tier="'+tier+'" '+(opts.action?'onclick="'+opts.action+'"':'disabled')+' aria-label="'+esc(name)+'; '+tierName[tier]+'; '+esc(desc)+'"><div class="gcard-art premium-art"><div class="portrait-frame">'+artHtml+'</div><span class="card-tier">'+tierName[tier]+'</span><span class="card-cost">⚡'+(c.cost??0)+'</span><span class="card-type">'+(typeLabel[type]||'CARTA')+'</span></div><div class="gcard-content"><div class="gcard-name">'+esc(name)+'</div>'+(c.title&&!locked?'<div class="gcard-title">'+esc(c.title)+'</div>':'')+'<div class="ability-label">✦ '+(locked?'A DESCOBRIR':esc(c.skill||(type==='villain'?'Falha do Descontrole':role(c))))+'</div><p class="gcard-text">'+(locked?'Desbloqueie avançando na saga.':esc(shortDesc))+'</p></div><div class="gcard-footer premium-stats">'+(unit?'<span>⚔ <b>'+c.atk+'</b></span><span>♥ <b>'+c.hp+'</b></span>':'<span>⚡ <b>'+(c.cost??0)+' EN</b></span><span>'+esc(role(c))+'</span>')+'</div>'+(opts.footer?'<div class="gcard-action">'+esc(opts.footer)+'</div>':'')+'</button>'
+};
+const origHeroUnit=heroUnit,origFoeUnit=foeUnit;
+heroUnit=function(u,i){return origHeroUnit(u,i).replace(/<div class="unit-art">[\s\S]*?<\/div>/,'<div class="unit-art unit-portrait">'+art(u)+'</div>')};
+foeUnit=function(u,i){return origFoeUnit(u,i).replace(/<div class="unit-art">[\s\S]*?<\/div>/,'<div class="unit-art unit-portrait">'+(u?art(u):'')+'</div>')};
+const originalHome=home;
+home=function(){let s=originalHome();s=s.replace('versão 2.1','VERSÃO 3.0 • NOVAS CARTAS');s=s.replace('<div class="home-content">','<div class="home-content"><div class="home-signet">✦ COLECIONE · EVOLUA · CONQUISTE ✦</div>');s=s.replace('<div class="home-actions">','<div class="feature-splash"><div class="feature-card feature-left">'+art(HEROES[0])+'</div><div class="feature-burst">VS</div><div class="feature-card feature-right">'+art(FOES[11])+'</div></div><div class="home-actions">');return s};
+let searchText='',tierFilter='all';
+window.filterCards=function(value){searchText=String(value||'').toLowerCase().trim();refreshCards()};
+window.filterTier=function(value){tierFilter=value;document.querySelectorAll('.rarity-chip').forEach(b=>b.classList.toggle('active',b.dataset.value===value));refreshCards()};
+function refreshCards(){document.querySelectorAll('.card-grid .gcard').forEach(card=>{const found=(!searchText||card.dataset.search.includes(searchText))&&(tierFilter==='all'||card.dataset.tier===tierFilter);card.style.display=found?'':'none'})}
+const originalAlbum=album;
+album=function(){
+ const s=originalAlbum(),toolbar='<div class="album-tools"><label class="search-label">⌕ <input aria-label="Pesquisar cartas" type="search" placeholder="Buscar personagem ou habilidade…" value="'+esc(searchText)+'" oninput="filterCards(this.value)"></label><div class="rarity-pills">'+[['all','Todas'],['common','Comum'],['rare','Rara'],['epic','Épica'],['legend','Lendária']].map(x=>'<button type="button" data-value="'+x[0]+'" class="rarity-chip '+(tierFilter===x[0]?'active':'')+'" onclick="filterTier(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div></div>';
+ setTimeout(()=>refreshCards(),0);
+ return s.replace('<div class="filterbar">',toolbar+'<div class="filterbar">');
+};
+const previousModal=modalView;
+modalView=function(){
+ if(!modal||modal.type!=='card')return previousModal();
+ const m=modal,c=m.card,t=m.cardType,locked=m.locked,selected=progress.chosen.includes(m.index),tier=rarity(c);
+ const skill=cardDesc(c),tactical=c.faction==='hero'?'Invoque esta carta em uma das três posições. Ela poderá agir a partir do turno seguinte. O especial custa 2 EN.':'Observe o Descontrole do rival e prepare armadilhas que anulam ou desviam seu ataque.';
+ const power='<section class="detail-section"><span>✧ PODER PRINCIPAL</span><h3>'+esc(c.skill||(t==='villain'?'Falha do Descontrole':role(c)))+'</h3><p>'+esc(skill)+'</p></section>';
+ const weakness=t==='villain'?'<section class="detail-section warning"><span>⚠ QUANDO O DESCONTROLE CHEGA A 3</span><p>'+esc(c.fail)+'</p></section>':'';
+ const details='<section class="detail-section"><span>◈ COMO USAR NA ESTRATÉGIA</span><p>'+esc(tactical)+'</p></section>';
+ return '<div class="modal-overlay" role="presentation" onclick="if(event.target===this)closeModal()"><div class="modal-dialog premium-dialog" role="dialog" aria-modal="true" aria-label="Ficha de '+esc(c.name)+'"><button class="modal-close" onclick="closeModal()" aria-label="Fechar">×</button><div class="premium-detail"><div class="detail-art tier-'+tier+'">'+(locked?'<div class="locked-glyph">?</div>':art(c))+'<div class="detail-tier">'+tierName[tier]+'</div></div><div class="detail-copy"><div class="eyebrow">'+(typeLabel[t]||'CARTA')+' · '+tierName[tier]+'</div><h2>'+esc(c.name)+'</h2><p class="detail-subtitle">'+esc(c.title||role(c))+'</p><div class="detail-stats"><span>⚡ '+(c.cost||0)+' EN</span>'+((t==='hero'||t==='villain')?'<span>⚔ '+c.atk+' ATQ</span><span>♥ '+c.hp+' VIDA</span>':'')+'</div>'+power+weakness+details+'<div class="modal-actions">'+(t==='hero'&&!locked?'<button class="btn gold" onclick="selectHero('+m.index+')">'+(selected?'✓ Remover do baralho':'+ Adicionar ao baralho')+'</button>':'')+'<button class="btn ghost" onclick="closeModal()">Fechar ficha</button></div></div></div></div></div>'
+};
+const originalHeader=header;
+header=function(){return originalHeader().replace('LULAVERSO</span>','LULAVERSO <sup class="version-badge">3.0</sup></span>')};
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal)closeModal()});
+render();
+})();
