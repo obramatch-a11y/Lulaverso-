@@ -1,0 +1,76 @@
+/* LULAVERSO 3.0 — cartão premium mobile-first */
+:root{--gold:#ffc92a;--gold2:#f6a900;--maroon:#bb2438;--ink:#161d31;--night:#111931}
+body{background:radial-gradient(ellipse at 52% -15%,#fff4af 0%,transparent 55%),linear-gradient(165deg,#fffefa 0%,#fff3cb 100%)}
+.shell{max-width:1280px}
+.version-badge{display:inline-block;position:relative;top:-4px;border-radius:8px;font-size:10px;color:#251b0c;background:#ffd43a;padding:2px 5px;letter-spacing:0}
+.home-hero{background:radial-gradient(ellipse at 80% 12%,#d28b2699,transparent 35%),linear-gradient(132deg,#15214b 0%,#252344 42%,#71422a 100%);isolation:isolate;border:2px solid #e4b852;box-shadow:0 24px 50px #61391333}
+.home-hero::before,.home-hero::after{pointer-events:none}
+.home-signet{font-size:11px;letter-spacing:1.1px;color:#fff0ad;font-weight:900;margin-bottom:16px}
+.feature-splash{width:min(360px,100%);height:170px;display:flex;align-items:center;justify-content:center;gap:0;margin:14px 0 20px;position:relative;pointer-events:none}
+.feature-card{width:126px;height:162px;position:relative;overflow:hidden;border:3px solid #f8cf60;border-radius:12px;background:#111a35;box-shadow:0 11px 25px #0008;transform:rotate(-10deg)}
+.feature-card.feature-right{border-color:#d764eb;transform:rotate(10deg);margin-left:-5px}
+.feature-card .portrait{height:100%;width:100%}
+.feature-burst{position:relative;z-index:3;font-size:28px;font-weight:1000;color:#fff;text-shadow:0 3px 10px #000,0 0 16px #ffb800;margin:0 -13px}
+.gcard.v3card{position:relative;border-radius:17px;overflow:hidden;text-align:left;border:2px solid #bfa46b;background:linear-gradient(#fffdf7,#faf0d6);box-shadow:0 6px 14px #2a244021,0 2px 0 #fff inset;transition:transform .18s ease,box-shadow .18s ease;min-width:0}
+.gcard.v3card:focus-visible{outline:3px solid #1a6fae;outline-offset:3px}
+.gcard.v3card:not(:disabled):hover{transform:translateY(-5px);box-shadow:0 14px 23px #2a244037}
+.gcard.v3card.tier-legend{border-color:#edb324;box-shadow:0 0 0 2px #fff1ae,0 7px 20px #bd852d44}
+.gcard.v3card.tier-epic{border-color:#9b66c9;box-shadow:0 0 0 2px #f0d7ff,0 6px 16px #9158b044}
+.gcard.v3card.tier-rare{border-color:#4b9ed5;box-shadow:0 0 0 2px #d4f5ff,0 6px 16px #6bb8dd33}
+.gcard.v3card.tier-common{border-color:#9daab5}
+.gcard.v3card.selected{outline:3px solid #31ae7a;outline-offset:2px}
+.gcard.v3card .premium-art{height:205px;padding:0;overflow:hidden;background:#151d38;position:relative}
+.premium-art .portrait-frame{position:absolute;inset:0;overflow:hidden}
+.portrait{display:block;width:100%;height:100%;object-fit:cover}
+.card-tier{position:absolute;right:5px;top:7px;z-index:2;border-radius:30px;background:#191c32dd;color:#fff6ca;border:1px solid #e7c87a;font-weight:950;padding:5px 7px;font-size:10px;letter-spacing:.35px;box-shadow:0 2px 8px #1118}
+.tier-epic .card-tier{border-color:#c88bf6;color:#ffdfff}
+.tier-rare .card-tier{border-color:#9fe3ff;color:#d9f7ff}
+.card-cost{position:absolute;left:5px;top:6px;z-index:2;background:linear-gradient(140deg,#279ce5,#15335f);border:2px solid #def9ff;color:#fff;border-radius:12px;box-shadow:0 2px 6px #0618329c;font-size:14px;font-weight:950;padding:6px 8px}
+.premium-art .card-type{position:absolute;bottom:0;left:0;right:0;font-size:10px;font-weight:950;padding:9px 6px 6px;text-align:center;background:linear-gradient(transparent,#111b30ed 38%,#0d132b);color:#ffe2a0;letter-spacing:1px}
+.gcard.v3card .gcard-content{padding:10px 11px 7px;min-height:147px}
+.gcard.v3card .gcard-name{font-size:17px;font-weight:1000;line-height:1.08;color:#212137;min-height:0;margin:0 0 5px}
+.gcard.v3card .gcard-title{color:#72624f;line-height:1.2;min-height:0;font-size:11px}
+.gcard.v3card .ability-label{font-size:10px;color:#a02d32;font-weight:1000;letter-spacing:.5px;margin:9px 0 4px;overflow-wrap:anywhere}
+.gcard.v3card .gcard-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;color:#463e37;min-height:0;font-size:11px;line-height:1.4;margin:0}
+.gcard.v3card .premium-stats{display:flex;justify-content:space-between;gap:4px;background:#171e31;color:#fff;min-height:39px;align-items:center;padding:6px 10px;font-size:12px;letter-spacing:.3px}
+.premium-stats b{font-size:17px}
+.gcard.v3card .gcard-action{background:#ffe8a4;color:#58370e;font-size:10px;font-weight:900;letter-spacing:.25px;padding:9px 6px}
+.gcard.v3card.foe .gcard-action{background:#e7d5f0;color:#432057}
+.gcard.v3card.locked .portrait-frame,.gcard.v3card.locked .gcard-content{filter:grayscale(1)}
+.locked-glyph{display:grid;place-content:center;height:100%;color:#dfd4f2;font-weight:1000;font-size:60px;line-height:1}
+.card-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.album-tools{background:#fffef6;border:1px solid #ead6a8;border-radius:18px;padding:13px;margin:12px 0 12px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.search-label{flex:1 1 230px;display:flex;gap:8px;align-items:center;border:1px solid #ccb683;border-radius:11px;padding:10px 12px;background:#fff}
+.search-label input{outline:0;border:0;font:inherit;min-width:0;width:100%;color:#24242a}
+.rarity-pills{display:flex;gap:5px;flex-wrap:wrap}
+.rarity-chip{border:1px solid #d8c48b;border-radius:30px;background:#fff9e8;color:#463a2a;padding:7px 10px;font-weight:750;font-size:11px}
+.rarity-chip.active{background:#202944;color:#fff;border-color:#202944}
+.hand .gcard.v3card .premium-art{height:126px}
+.hand .gcard.v3card .gcard-content{min-height:120px;padding:7px}
+.hand .gcard.v3card .gcard-name{font-size:13px}
+.hand .gcard.v3card .gcard-text{font-size:10px;-webkit-line-clamp:2;line-clamp:2}
+.hand .gcard.v3card .ability-label{margin:5px 0 3px;font-size:9px}
+.hand .gcard.v3card .premium-stats{font-size:11px;min-height:34px}
+.unit-portrait{padding:0!important;overflow:hidden;background:#101a37;border-radius:10px 10px 0 0}
+.unit-portrait .portrait{height:100%;width:100%}
+.premium-dialog{max-width:870px;width:95vw}
+.premium-detail{display:grid;grid-template-columns:minmax(210px,37%) minmax(0,1fr);gap:0;min-height:460px}
+.detail-art{position:relative;overflow:hidden;background:#151e38}
+.detail-art .portrait{height:100%;min-height:460px}
+.detail-tier{position:absolute;top:18px;right:15px;padding:8px 12px;border:1px solid #e4b243;border-radius:40px;color:#fff4ce;font-size:11px;font-weight:900;background:#141625dc}
+.detail-copy{padding:33px 24px 24px}
+.detail-copy h2{margin:4px 0 6px;font-size:clamp(24px,3vw,37px);color:#251f33;line-height:1.04}
+.detail-subtitle{font-size:14px;color:#66627b;margin:0 0 18px}
+.detail-stats{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.detail-stats span{background:#15213a;color:#fff;border-radius:12px;padding:10px;font-weight:850;font-size:13px}
+.detail-section{padding:13px 14px;background:#fff7df;border:1px solid #efdfb1;border-radius:13px;margin-bottom:10px}
+.detail-section span{font-size:10px;font-weight:950;letter-spacing:.8px;color:#b32932}
+.detail-section h3{margin:3px 0 6px;font-size:17px;color:#21223e}
+.detail-section p{margin:4px 0;color:#4f4546;font-size:13px;line-height:1.55}
+.detail-section.warning{background:#fbe8ee;border-color:#f2c4d5}
+.battle-hint{border-left:4px solid #f2ca3e}
+.home-actions .gold,.battle-controls .gold{box-shadow:0 6px 0 #bb850f}
+@media(max-width:920px){.card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.home-hero{padding:22px 16px}.feature-splash{height:150px;margin:14px auto 19px}.feature-card{height:147px;width:113px}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.gcard.v3card .premium-art{height:168px}.gcard.v3card .gcard-content{min-height:140px;padding:8px}.gcard.v3card .gcard-name{font-size:14px}.gcard.v3card .gcard-text{font-size:11px}.gcard.v3card .gcard-title{font-size:10px}.gcard.v3card .gcard-action{font-size:9px}.card-tier{font-size:8px;padding:5px}.card-cost{font-size:12px;padding:4px 6px}.album-tools{padding:9px}.rarity-pills{width:100%;justify-content:space-between}.rarity-chip{font-size:9px;padding:8px 6px}.hand{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.hand .gcard.v3card .premium-art{height:119px}.hand .gcard.v3card .gcard-content{min-height:126px}.premium-detail{grid-template-columns:1fr;gap:0}.detail-art{height:220px}.detail-art .portrait{min-height:0;height:100%;object-position:center 24%}.detail-copy{padding:18px 15px 25px}.premium-dialog{width:96vw}.unit-portrait{height:74px!important}.unit-portrait .portrait{height:100%}.home-hero h1{font-size:clamp(37px,10vw,54px)}}
+@media(max-width:380px){.gcard.v3card .premium-art{height:146px}.gcard.v3card .gcard-name{font-size:12px}.unit-portrait{height:60px!important}.card-grid{gap:7px}}
+@media(prefers-reduced-motion:reduce){.gcard.v3card{transition:none}}
