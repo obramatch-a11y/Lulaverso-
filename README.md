@@ -1,30 +1,36 @@
 # LULAVERSO — A Saga dos Guardiões
 
-Primeira versão jogável (MVP) do LULAVERSO: duelo de cartas fictício para um jogador contra inteligência artificial local, com 40 personagens no catálogo, campanha de 35 duelos, armadilhas, poderes e progresso salvo no navegador.
+Jogo de cartas estratégico e humor ficcional, para um jogador, 100% estático e instalável como PWA.
 
-## Jogar online
+**Site:** https://obramatch-a11y.github.io/Lulaverso-/
 
-Após a ativação do GitHub Pages em **Settings → Pages**, acesse:
+## Versão 2.1 (correção de usabilidade)
 
-https://obramatch-a11y.github.io/Lulaverso-/
+- Corrigida a sobreposição decorativa que bloqueava os botões na tela inicial.
+- **Começar a jogar** agora abre diretamente o duelo.
+- Cartas com custo, poder, explicação, ataque e vida visíveis; ficha detalhada ao tocar na coleção.
+- Arena com comandos de ataque e habilidade nomeados, instruções contextuais, feedback de energia e registro do combate.
+- Layout responsivo para celular; expansão de cartas e filtros por categoria.
+- Dados salvos na mesma chave `lulaverso-save-v1`, preservando o progresso anterior.
+- Novo Service Worker com cache atualizado e prioridade para conteúdo da rede.
 
-O código está na branch `main`. A publicação automática é realizada pelo workflow `.github/workflows/pages.yml`.
+## Como jogar
 
-## Instalação local
+No primeiro turno, use energia (EN) para invocar um Guardião. Ele pode agir a partir do turno seguinte. Pressione **ATACAR** ou **ESPECIAL (2 EN)** e toque no alvo. Armadilhas reagem automaticamente a ataques. Magias produzem efeitos imediatos. Reduza a Paciência da base rival a zero para ganhar. A IA responde ao encerrar o turno.
 
-Abra `index.html` num navegador moderno ou sirva esta pasta em um servidor web estático. Não há backend, login, chaves de API nem dependências de instalação.
+## Estrutura
 
-## Recursos implementados
+- `index.html` — página principal
+- `styles.css` — interface responsiva
+- `game.js` — catálogo de cartas, motor de jogo, campanha, interface e armazenamento local
+- `sw.js` — suporte básico a uso offline
+- `manifest.webmanifest` e `icon.svg` — ícone e configuração PWA
+- `.github/workflows/pages.yml` — publicação automática em GitHub Pages
 
-- Exército dos Guardiões da Aurora e facção rival de humor cartoon.
-- Batalhas de cartas por turnos, mana, habilidades, armadilhas, medidores de Descontrole e Caos.
-- Campanha progressiva, recompensas informativas e salvamento local.
-- Interface responsiva e suporte básico a PWA.
+Para testar localmente use um servidor HTTP simples. Não há segredos, API nem dependências externas.
 
-## Estado do projeto
+## Limitações
 
-Trata-se de um MVP. A arte ainda é provisória; as vozes finais e animações cinematográficas completas não foram produzidas. As recompensas e pontuações são simbólicas e não representam votos reais.
+Protótipo funcional com **ilustrações provisórias** (emojis e arte CSS), sem as animações ou vozes definitivas de anime. A pontuação de conquistas é fictícia, não equivale a voto real. Políticas públicas são descritas de modo resumido, sem associação de elegibilidade ou benefício a preferências eleitorais.
 
-## Conteúdo e licença
-
-Obra independente de ficção e sátira; não é produto oficial de partido, governo, candidato ou pessoa pública. Falas e poderes são inventados. Código disponibilizado sob MIT em `LICENSE`; marcas e imagens de terceiros continuam sujeitas aos direitos dos titulares.
+Licença do código: MIT (as marcas e símbolos de terceiros não são cobertos pela licença).
