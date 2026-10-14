@@ -1,35 +1,41 @@
-const assert=require('node:assert/strict');
-const fs=require('node:fs');
-const vm=require('node:vm');
-const store=new Map();
-const app={innerHTML:''};
-const toast={textContent:'',classList:{add(){},remove(){}}};
-const doc={getElementById:id=>id==='app'?app:id==='toast'?toast:null,querySelectorAll:()=>[]};
-const ctx=vm.createContext({
-  window:{scrollTo(){},addEventListener(){}},
-  document:doc,
-  location:{protocol:'https:'},
-  navigator:{},
-  localStorage:{getItem:key=>store.get(key)||null,setItem:(k,v)=>store.set(k,v)},
-  setTimeout:fn=>0,
-  clearTimeout(){},
-  console
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const memory = new Map();
+const root = {innerHTML: ''};
+const toast = {textContent: '', classList: {add(){}, remove(){}}};
+const windowMock = {LVL_ART: {}, scrollTo(){}, addEventListener(){}};
+const ctx = vm.createContext({
+  window: windowMock,
+  document: {documentElement: {style: {setProperty(){}}}, getElementById(id){return id === 'app' ? root : id === 'toast' ? toast : null;},querySelectorAll(){return [];}},
+  location: {protocol: 'file:'}, navigator: {},
+  localStorage: {getItem(key){return memory.get(key) || null;}, setItem(key, value){memory.set(key, value);}},
+  setTimeout(){return 0;}, clearTimeout(){}, console,
 });
-vm.runInContext(fs.readFileSync('game.js','utf8'),ctx,{filename:'game.js'});
-vm.runInContext(fs.readFileSync('upgrade.js','utf8'),ctx,{filename:'upgrade.js'});
-assert.match(app.innerHTML,/feature-splash/,'tela inicial visual');
+for (const file of ['art-1.js','art-2.js','art-3.js','art-4.js','art-5-heroes.js','art-5-foes.js','game.js']) {
+  assert.ok(fs.existsSync(file), 'Faltando '+file);
+  vm.runInContext(fs.readFileSync(file,'utf8'),ctx,{filename:file});
+}
+assert.equal(Object.keys(windowMock.LVL_ART).filter(x=>/^h\d+$/.test(x)).length,20,'20 herois ilustrados');
+assert.equal(Object.keys(windowMock.LVL_ART).filter(x=>/^v\d+$/.test(x)).length,20,'20 rivais ilustrados');
+assert.match(root.innerHTML,/COMEÇAR A JOGAR/,'acao principal exibida');
+assert.match(root.innerHTML,/card-portrait/,'retratos carregados na tela inicial');
 vm.runInContext("view='album';albumFilter='heroes';render()",ctx);
-assert.match(app.innerHTML,/premium-art/,'colecao com retratos');
-assert.match(app.innerHTML,/rarity-chip/,'filtro de raridade');
-assert.equal((app.innerHTML.match(/class="gcard v3card/g)||[]).length,20,'20 cartas de heroi');
+assert.match(root.innerHTML,/card-portrait/,'colecao com imagens');
+assert.match(root.innerHTML,/card-rarity/,'raridade visivel');
+assert.equal(vm.runInContext('HEROES.length',ctx),20);
 vm.runInContext("showCard('hero',0)",ctx);
-assert.match(app.innerHTML,/detail-section/,'ficha detalhada');
-assert.match(app.innerHTML,/Cosmo da União/,'poder nomeado');
-vm.runInContext("closeModal();startBattle()",ctx);
-assert.match(app.innerHTML,/unit-portrait/,'imagens na arena');
-assert.match(app.innerHTML,/premium-art/,'cartas na mao');
-assert.equal(vm.runInContext('battle.round',ctx),1);
+assert.match(root.innerHTML,/detail-grid/,'ficha ampliada');
+assert.match(root.innerHTML,/Cosmo da União/,'poder de heroi explicado');
+vm.runInContext('closeModal();startBattle()',ctx);
+assert.equal(vm.runInContext('battle.stage',ctx),0,'comeco da saga');
+assert.equal(vm.runInContext('battle.enemies[1].name',ctx),'Tio do ZAP','primeiro adversario');
+assert.match(root.innerHTML,/battle-dock/,'mao sempre acessivel');
+assert.match(root.innerHTML,/hand-card-play/,'carta jogavel');
+assert.match(root.innerHTML,/card-portrait/,'retratos na arena');
 assert.equal(vm.runInContext('battle.hand.length',ctx),5);
 vm.runInContext('enemyTurn()',ctx);
 assert.equal(vm.runInContext('battle.round',ctx),2,'turno da IA');
-console.log('LULAVERSO 3.0: smoke test OK — inicio, colecao, modal, arena e IA.');
+vm.runInContext('promptResetSaga()',ctx);
+assert.match(root.innerHTML,/reset|reiniciar|apagar/i,'confirmacao antes de reiniciar');
+console.log('LULAVERSO 5: OK — 40 retratos, inicio, colecao, ficha, duelo, mao, IA, confirmacao.');
