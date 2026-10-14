@@ -1,52 +1,50 @@
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const vm = require('node:vm');
-const memory = new Map();
-const root = {innerHTML: ''};
-const toast = {textContent: '', classList: {add(){}, remove(){}}};
-const windowMock = {LVL_ART: {}, scrollTo(){}, addEventListener(){}};
-const ctx = vm.createContext({
-  window: windowMock,
-  document: {documentElement: {style: {setProperty(){}}}, getElementById(id){return id === 'app' ? root : id === 'toast' ? toast : null;},querySelectorAll(){return [];}},
-  location: {protocol: 'file:'}, navigator: {},
-  localStorage: {getItem(key){return memory.get(key) || null;}, setItem(key, value){memory.set(key, value);}},
-  setTimeout(){return 0;}, clearTimeout(){}, console,
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const store=new Map(), app={innerHTML:''};
+const toast={textContent:'',classList:{add(){},remove(){}}};
+const context=vm.createContext({
+ window:{LVL_ART:{},scrollTo(){},addEventListener(){}},
+ document:{documentElement:{style:{setProperty(){}}},getElementById(id){return id==='app'?app:id==='toast'?toast:null;},querySelectorAll(){return []}},
+ location:{protocol:'file:'},navigator:{},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},
+ setTimeout(){return 0},clearTimeout(){},console
 });
-for (const file of ['art-1.js','art-2.js','art-3.js','art-4.js','art-5-heroes.js','art-5-foes.js','game.js']) {
-  assert.ok(fs.existsSync(file), 'Faltando '+file);
-  vm.runInContext(fs.readFileSync(file,'utf8'),ctx,{filename:file});
+for(const f of ['art-1.js','art-2.js','art-3.js','art-4.js','art-5-heroes.js','art-5-foes.js','game.js']){
+  assert.ok(fs.existsSync(f),`Arquivo ausente: ${f}`);
+  vm.runInContext(fs.readFileSync(f,'utf8'),context,{filename:f});
 }
-assert.equal(Object.keys(windowMock.LVL_ART).filter(x=>/^h\d+$/.test(x)).length,20,'20 herois ilustrados');
-assert.equal(Object.keys(windowMock.LVL_ART).filter(x=>/^v\d+$/.test(x)).length,20,'20 rivais ilustrados');
-const heroPortraits=Array.from(vm.runInContext('GUARDIAN_PORTRAIT_IDS',ctx));
-assert.equal(heroPortraits.length,20,'20 identificadores de retratos');
-assert.equal(new Set(heroPortraits).size,20,'cada heroi com retrato exclusivo');
-const actualHeroGenders=['M','M','F','F','M','M','F','M','F','F','F','M','M','M','M','M','F','M','F','F'];
-const drawnPortraitGenders=['M','M','F','F','M','F','F','F','F','M','F','M','F','M','M','M','M','F','M','M'];
-heroPortraits.forEach((id,i)=>{
- const sourceIndex=Number(id.slice(1));
- assert.ok(windowMock.LVL_ART[id], 'ilustracao ausente: '+id);
- assert.equal(drawnPortraitGenders[sourceIndex],actualHeroGenders[i], 'retrato divergente para '+i);
-});
-
-assert.match(root.innerHTML,/COMEÇAR A JOGAR/,'acao principal exibida');
-assert.match(root.innerHTML,/card-portrait/,'retratos carregados na tela inicial');
-vm.runInContext("view='album';albumFilter='heroes';render()",ctx);
-assert.match(root.innerHTML,/card-portrait/,'colecao com imagens');
-assert.match(root.innerHTML,/card-rarity/,'raridade visivel');
-assert.equal(vm.runInContext('HEROES.length',ctx),20);
-vm.runInContext("showCard('hero',0)",ctx);
-assert.match(root.innerHTML,/detail-grid/,'ficha ampliada');
-assert.match(root.innerHTML,/Cosmo da União/,'poder de heroi explicado');
-vm.runInContext('closeModal();startBattle()',ctx);
-assert.equal(vm.runInContext('battle.stage',ctx),0,'comeco da saga');
-assert.equal(vm.runInContext('battle.enemies[1].name',ctx),'Tio do ZAP','primeiro adversario');
-assert.match(root.innerHTML,/battle-dock/,'mao sempre acessivel');
-assert.match(root.innerHTML,/hand-card-play/,'carta jogavel');
-assert.match(root.innerHTML,/card-portrait/,'retratos na arena');
-assert.equal(vm.runInContext('battle.hand.length',ctx),5);
-vm.runInContext('enemyTurn()',ctx);
-assert.equal(vm.runInContext('battle.round',ctx),2,'turno da IA');
-vm.runInContext('promptResetSaga()',ctx);
-assert.match(root.innerHTML,/reset|reiniciar|apagar/i,'confirmacao antes de reiniciar');
-console.log('LULAVERSO 5: OK — 40 retratos, inicio, colecao, ficha, duelo, mao, IA, confirmacao.');
+const art=context.window.LVL_ART;
+assert.equal(Object.keys(art).filter(k=>/^h\d+$/.test(k)).length,20);
+assert.equal(Object.keys(art).filter(k=>/^v\d+$/.test(k)).length,20);
+const mapped=Array.from(vm.runInContext('GUARDIAN_PORTRAIT_IDS',context));
+assert.equal(mapped.length,20);assert.equal(new Set(mapped).size,20);
+const actual=['M','M','F','F','M','M','F','M','F','F','F','M','M','M','M','M','F','M','F','F'];
+const portraits=['M','M','F','F','M','F','F','F','F','M','F','M','F','M','M','M','M','F','M','M'];
+mapped.forEach((id,i)=>{assert.equal(portraits[+id.slice(1)],actual[i],`Genero visual da carta h${i}`);assert.ok(art[id]);});
+assert.match(app.innerHTML,/COMEÇAR A JOGAR/);
+vm.runInContext('view="album";albumFilter="heroes";render()',context);
+assert.match(app.innerHTML,/collection-v6/);
+assert.match(app.innerHTML,/album-query/);
+assert.match(app.innerHTML,/deck-manager/);
+assert.match(app.innerHTML,/rarity-query/);
+vm.runInContext("showCard('hero',3)",context);
+assert.match(app.innerHTML,/detail-grid/);
+assert.match(app.innerHTML,/Sinfonia Solar/);
+vm.runInContext('closeModal();startBattle()',context);
+assert.match(app.innerHTML,/battle-v6/);
+assert.match(app.innerHTML,/battle-mat/);
+assert.match(app.innerHTML,/battle-dock/);
+assert.match(app.innerHTML,/commander/);
+assert.equal((app.innerHTML.match(/class="mini-slot/g)||[]).length,6);
+assert.equal(vm.runInContext('battle.round',context),1);
+assert.equal(vm.runInContext('battle.hand.length',context),5);
+assert.equal(vm.runInContext('battle.enemies[1].name',context),'Tio do ZAP');
+const starter=vm.runInContext('battle.hand.findIndex(c=>c.type==="hero"&&c.cost<=3)',context);
+assert.ok(starter>=0,'mão inicial com Guardião acessível');
+vm.runInContext(`playCard(${starter})`,context);
+assert.equal(vm.runInContext('battle.heroes.filter(Boolean).length',context),1);
+vm.runInContext('enemyTurn()',context);
+assert.equal(vm.runInContext('battle.round',context),2);
+vm.runInContext('promptResetSaga()',context);
+assert.match(app.innerHTML,/Reiniciar sua saga/);
+console.log('LULAVERSO 6 OK: retratos/associações, coleção, 3+3 posições, carta, turno da IA, confirmação.');
