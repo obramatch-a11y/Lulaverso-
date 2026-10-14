@@ -18,6 +18,17 @@ for (const file of ['art-1.js','art-2.js','art-3.js','art-4.js','art-5-heroes.js
 }
 assert.equal(Object.keys(windowMock.LVL_ART).filter(x=>/^h\d+$/.test(x)).length,20,'20 herois ilustrados');
 assert.equal(Object.keys(windowMock.LVL_ART).filter(x=>/^v\d+$/.test(x)).length,20,'20 rivais ilustrados');
+const heroPortraits=Array.from(vm.runInContext('GUARDIAN_PORTRAIT_IDS',ctx));
+assert.equal(heroPortraits.length,20,'20 identificadores de retratos');
+assert.equal(new Set(heroPortraits).size,20,'cada heroi com retrato exclusivo');
+const actualHeroGenders=['M','M','F','F','M','M','F','M','F','F','F','M','M','M','M','M','F','M','F','F'];
+const drawnPortraitGenders=['M','M','F','F','M','F','F','F','F','M','F','M','F','M','M','M','M','F','M','M'];
+heroPortraits.forEach((id,i)=>{
+ const sourceIndex=Number(id.slice(1));
+ assert.ok(windowMock.LVL_ART[id], 'ilustracao ausente: '+id);
+ assert.equal(drawnPortraitGenders[sourceIndex],actualHeroGenders[i], 'retrato divergente para '+i);
+});
+
 assert.match(root.innerHTML,/COMEÇAR A JOGAR/,'acao principal exibida');
 assert.match(root.innerHTML,/card-portrait/,'retratos carregados na tela inicial');
 vm.runInContext("view='album';albumFilter='heroes';render()",ctx);
