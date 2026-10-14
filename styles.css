@@ -58,3 +58,116 @@ button{font:inherit;cursor:pointer}button:focus-visible,[role="button"]:focus-vi
 
 /* Assets inlined in art packs so hosting needs no binary upload permissions */
 .home-hero{background-image:linear-gradient(0deg,#020a18 0%,#06172a 35%,#0a25436a 58%,#030b192e 100%),var(--hero-cover,linear-gradient(135deg,#0a2b55,#020a18))!important}
+/* v5: combat-first responsive arena — portraits, legible actions, always-available hand */
+.battle-page {--electric:#23d3ff;--gold:#ffd16d;--ink:#051024}
+.battle-page .arena {background:radial-gradient(ellipse 85% 58% at 48% 30%,#174067 0%,transparent 70%),linear-gradient(155deg,#0b1e3c,#030918 62%,#091b30);border:1px solid #a67d43;box-shadow:0 18px 60px #000a,0 0 0 1px #dcc08f20 inset}
+.battle-page .versus-banner{position:relative;background:linear-gradient(105deg,#061b39a6,#12233bbd 47%,#270d33b8),radial-gradient(circle at 50% 70%,#a575213d,transparent 58%);border:1px solid #d29c55;box-shadow:inset 0 0 25px #ffe49f12;overflow:hidden}
+.battle-page .versus-banner:after{content:'✦';position:absolute;left:48%;top:-35px;font-size:180px;opacity:.035;color:white;pointer-events:none}
+.battle-page .versus-face{border-radius:12px;box-shadow:0 0 19px #ffc34b7a,0 0 3px #ffc748;transform:rotate(-2deg)}
+.battle-page .versus-person.rival .versus-face{box-shadow:0 0 19px #d363ff88,0 0 3px #d963ff;transform:rotate(2deg)}
+.battle-page .versus-face img,.battle-page .unit img{object-fit:cover;object-position:center 18%}
+.battle-page .versus-glow{color:#ffebad;text-shadow:0 0 10px #efaa18,0 0 22px #ff941b,2px 3px #3a1803}
+.battle-page .unit{position:relative;border-radius:12px;box-shadow:inset 0 1px #ffffff20,0 0 14px #c7ab5c25;background:#051b36}
+.battle-page .unit.foe{background:#1b0d31;border-color:#ac65e0;box-shadow:0 0 15px #b832e52e}
+.battle-page .unit-art{position:relative;background:#121932}
+.battle-page .unit-art:after{content:'';position:absolute;inset:auto 0 0;height:38%;background:linear-gradient(transparent,#071b31cc);pointer-events:none}
+.battle-page .unit.foe .unit-art:after{background:linear-gradient(transparent,#1b0e29dc)}
+.battle-page .unit-name{line-height:1.16;font-weight:900;letter-spacing:-.2px;word-break:normal;text-wrap:balance}
+.battle-page .unit-points{display:flex;gap:3px;justify-content:center}
+.battle-page .unit-points span{background:#192f47;border:1px solid #ffffff21;color:#fffaf5;border-radius:6px;font-weight:800;padding:3px 5px}
+.battle-page .unit.foe .unit-points span{background:#2a193b}
+.battle-page .unit-tools button{letter-spacing:.2px;min-height:34px}
+.battle-page .empty{background:linear-gradient(165deg,#071b31,#092c4b);border-color:#2b5681;color:#9abbdf}
+.battle-page .empty:after{content:'✧';display:block;font-size:22px;color:#4b8fc9;opacity:.7}
+.battle-page .divider-field{letter-spacing:1.6px;color:#f4bc66;font-weight:900;font-size:13px;background:linear-gradient(90deg,transparent,#63461935,transparent)}
+.battle-page .arena-status .pill{border:1px solid #2b6594;background:#0c2744;color:#d9edff}
+.battle-page .battle-hint{font-size:13px;padding:9px 11px;border-color:#2d6793}
+.battle-dock{margin-top:16px;background:linear-gradient(160deg,#071c36,#030d1b);border:1px solid #5d88a764;border-radius:15px;padding:11px}
+.battle-dock .hand-head{display:flex;align-items:center;justify-content:space-between;gap:9px;margin:0 0 8px}
+.battle-dock .hand-head h3{margin:0;letter-spacing:.6px;font-size:17px;color:#ffe2a4}
+.battle-dock .hand-count{font-weight:700;font-size:10px;color:#9bd0eb;border:1px solid #386c93;border-radius:20px;padding:3px 6px;vertical-align:middle}
+.battle-dock .hand-subtitle{font-size:11px;color:#9cb9cf}
+.hand-en{background:#1e3860;border:1px solid #3f86bc;border-radius:24px;padding:6px 10px;color:#f8da89;font-size:12px;font-weight:900;white-space:nowrap}
+.battle-dock .hand{display:flex;gap:9px;overflow:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding:4px 1px 9px;margin:0}
+.battle-dock .hand-tile{flex:0 0 134px;min-width:0;background:linear-gradient(160deg,#13233e,#0b142a);border:1px solid #b99656;border-radius:11px;overflow:hidden;box-shadow:0 3px 12px #000a;scroll-snap-align:start;position:relative}
+.hand-tile.hero{border-color:#d9aa44}.hand-tile.spell{border-color:#6bc6f8}.hand-tile.trap{border-color:#c28fea}
+.hand-tile.unaffordable{filter:saturate(.66)}
+.hand-card-play{width:100%;display:flex;flex-direction:column;align-items:stretch;text-align:left;padding:0;border:0;background:transparent;color:#f3eff0;cursor:pointer}
+.hand-art{position:relative;height:105px;background:#14274a;overflow:hidden}
+.hand-art img,.hand-art .portrait-fallback{width:100%;height:100%;object-fit:cover;object-position:center 18%}
+.hand-art:after{content:'';position:absolute;inset:64% 0 0;background:linear-gradient(transparent,#091627c7);pointer-events:none}
+.hand-energy{position:absolute;z-index:2;top:5px;left:5px;background:linear-gradient(130deg,#0b71cd,#062c9e);box-shadow:0 0 5px #43b0ed;color:white;font-weight:950;border:1px solid #bfe5ff;border-radius:7px;padding:3px 5px;font-size:12px}
+.hand-name{font-weight:950;font-size:12px;padding:6px 7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hand-effect{font-size:10px;color:#b6d5e7;padding:3px 7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:18px}
+.hand-action{color:#ffe08a;font-size:9px;font-weight:950;padding:4px 7px 6px;letter-spacing:.5px}
+.hand-info{display:block;width:100%;padding:5px;background:#102f4d;border:0;border-top:1px solid #345579;color:#b8dffa;font-size:10px;font-weight:800;cursor:pointer}
+.hand-card-play:focus-visible,.hand-info:focus-visible{outline:3px solid #ffd66b;outline-offset:-3px}
+.hand-tile.unaffordable .hand-action{color:#b4a9a6}
+.battle-dock .battle-controls{margin:10px 0 0;display:flex;gap:8px}
+.battle-dock .battle-controls .btn{font-size:12px;min-height:38px;margin:0;letter-spacing:.4px}
+.battle-dock .battle-controls .btn.gold{flex:1}
+.battle-dock .battle-controls .btn.ghost{flex:0 0 90px}
+@media(max-width:700px){
+  .battle-page{padding-bottom:260px!important}
+  .battle-page .section-head{margin:0 0 8px;align-items:center}
+  .battle-page .page-title{font-size:clamp(16px,4.4vw,21px);line-height:1.1}
+  .battle-page .battle-heading .eyebrow{font-size:10px;margin-bottom:3px}
+  .battle-page .battle-heading .btn{font-size:11px;padding:7px 9px}
+  .battle-page .arena{padding:9px;border-radius:15px}
+  .battle-page .versus-banner{min-height:80px;height:82px;padding:7px 5px;gap:4px;margin-bottom:8px;border-radius:12px}
+  .battle-page .versus-person{gap:5px;align-items:center}
+  .battle-page .versus-face{height:64px;width:52px;flex:0 0 52px}
+  .battle-page .versus-info{gap:3px}
+  .battle-page .versus-info b{font-size:9px;line-height:1.12}
+  .battle-page .versus-info span{font-size:10px;white-space:nowrap}
+  .battle-page .versus-glow{font-size:26px}
+  .battle-page .hud{font-size:10px;min-height:25px;margin:3px 0}
+  .battle-page .hud-life{font-size:10px;padding:3px 5px}
+  .battle-page .life{height:7px;margin:4px 0}
+  .battle-page .arena-lanes{gap:5px;margin:6px 0}
+  .battle-page .unit-art{height:clamp(74px,24vw,116px)}
+  .battle-page .unit-body{padding:4px 3px 5px}
+  .battle-page .unit-name{font-size:clamp(9px,2.5vw,12px);min-height:25px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .battle-page .unit-points span{font-size:10px;padding:2px 5px;white-space:nowrap}
+  .battle-page .chaos{font-size:8px;white-space:nowrap}
+  .battle-page .empty{min-height:94px;font-size:10px;line-height:1.5}
+  .battle-page .divider-field{font-size:10px;letter-spacing:1px;padding:7px 0}
+  .battle-page .unit-tools button{font-size:10px;min-height:30px}
+  .battle-page .arena-status{gap:5px;justify-content:space-between}
+  .battle-page .arena-status .pill{padding:4px 6px;font-size:10px;flex:1;text-align:center;white-space:nowrap}
+  .battle-page .battle-hint{margin-top:6px;font-size:11px;line-height:1.35;padding:7px 8px}
+  .battle-page .battle-dock{position:fixed;bottom:0;left:0;right:0;z-index:40;margin:0;padding:9px 10px max(8px,env(safe-area-inset-bottom));border-width:1px 0 0;border-color:#d9aa5c;background:linear-gradient(170deg,#06162af7,#030c1cf9);border-radius:15px 15px 0 0;box-shadow:0 -15px 34px #010511ee;backdrop-filter:blur(18px)}
+  .battle-dock .hand-head{margin-bottom:5px}
+  .battle-dock .hand-head h3{font-size:12px}
+  .battle-dock .hand-subtitle{font-size:10px}
+  .battle-dock .hand-en{font-size:11px;padding:6px 8px}
+  .battle-dock .hand{gap:6px;padding:2px 2px 6px}
+  .battle-dock .hand-tile{flex-basis:111px;border-radius:9px}
+  .hand-art{height:76px}
+  .hand-name{font-size:11px;padding:4px 6px 0}
+  .hand-effect{font-size:9px;padding:2px 6px;min-height:15px}
+  .hand-action{font-size:9px;padding:3px 6px}
+  .hand-info{font-size:9px;padding:4px 5px}
+  .battle-dock .battle-controls{margin-top:5px}
+  .battle-dock .battle-controls .btn{font-size:11px;min-height:37px;padding:7px 10px}
+  .battle-dock .battle-controls .btn.ghost{flex-basis:83px}
+  .battle-page .battle-aside{display:none}
+}
+@media(max-width:375px){
+ .battle-page .versus-info b{font-size:8px}
+ .battle-page .versus-info span{font-size:9px}
+ .battle-page .versus-glow{font-size:22px}
+ .battle-page .versus-face{width:45px;flex-basis:45px}
+ .battle-page .arena-status .pill{font-size:9px;padding:4px 3px}
+}
+
+/* V5 ghosted guardian pedestals: visually rich without pretending a hero is in play */
+.battle-page .hero-placeholder{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:3px;min-height:148px;padding:12px 3px;background:#061831;}
+.battle-page .hero-placeholder .pedestal-ghost{position:absolute;inset:0;z-index:-1;opacity:.25;filter:grayscale(.4);overflow:hidden;}
+.battle-page .hero-placeholder .pedestal-ghost img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+.battle-page .hero-placeholder:before{content:'';position:absolute;inset:0;background:linear-gradient(transparent 15%,#061831b9 65%,#061831 100%);pointer-events:none;z-index:-1;}
+.battle-page .hero-placeholder:after{display:none;}
+.battle-page .hero-placeholder .pedestal-icon{font-size:19px;color:#e6b85e;text-shadow:0 0 10px #efcc61;margin:auto 0 0;}
+.battle-page .hero-placeholder b{font-size:10px;color:#d2e3f5;}
+.battle-page .hero-placeholder small{font-size:8px;color:#a3b3c9;letter-spacing:.25px;}
+@media(max-width:700px){.battle-page .hero-placeholder{min-height:96px;padding:4px 1px 7px;gap:0}.battle-page .hero-placeholder .pedestal-icon{font-size:14px}.battle-page .hero-placeholder b{font-size:9px}.battle-page .hero-placeholder small{font-size:7px}}
