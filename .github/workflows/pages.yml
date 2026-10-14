@@ -24,6 +24,11 @@ jobs:
         run: |
           node --check game.js
           node --check upgrade.js
+          node --check premium-v4.js
+          node --check art-1.js
+          node --check art-2.js
+          node --check art-3.js
+          node --check art-4.js
           node tests/smoke.cjs
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
