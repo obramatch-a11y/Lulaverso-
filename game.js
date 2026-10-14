@@ -44,7 +44,18 @@ function cardDesc(c){return c.type==='hero'||c.faction==='hero'?skillDetails[c.k
 
 // Arte ilustrada original, recortada dos estudos visuais do LULAVERSO. Sem dependências externas.
 const illustrated=new Set(['h0','h3','h7','h8','h16','v0','v2','v7','v9','s0','s1','s2','s3']);
-function artFile(c){return c && window.LVL_ART && window.LVL_ART[c.id] || null}
+// Revisão manual do álbum de 20 retratos: associação única e coerente com cada Guardião.
+// O índice aponta para o retrato ilustrado original no pacote art-5-heroes.js.
+// Não muda as cartas, poderes, progressão ou estatísticas.
+const GUARDIAN_PORTRAIT_IDS=Object.freeze([
+ 'h0','h1','h2','h3','h4','h11','h5','h9','h17','h6',
+ 'h10','h16','h18','h14','h19','h15','h12','h13','h8','h7'
+]);
+function artFile(c){
+ if(!c||!window.LVL_ART)return null;
+ const id=c.faction==='hero'?GUARDIAN_PORTRAIT_IDS[Number(c.id.slice(1))]||c.id:c.id;
+ return window.LVL_ART[id]||window.LVL_ART[c.id]||null;
+}
 function illustration(c,klass=''){
  const url=artFile(c);
  return url?`<img class="card-portrait ${klass}" src="${url}" loading="lazy" alt="Ilustração fantástica de ${esc(c.name)}" />`:`<span class="portrait-fallback ${klass}" aria-label="Ilustração abstrata">${esc(c?.icon||'✦')}</span>`;
